@@ -1,6 +1,7 @@
 ---
 - name: Bootstrap Ubuntu_Agent for CI/CD Feedback App
   hosts: Agent
+  become: yes
   
 
   vars:
