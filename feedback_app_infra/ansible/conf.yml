@@ -1,0 +1,146 @@
+---
+- name: Bootstrap Ubuntu_Agent for CI/CD Feedback App
+  hosts: localhost
+  connect: local
+  become: true
+
+  vars:
+    python_version: "3.9"
+ 
+
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install base packages
+      apt:
+        name:
+          - curl
+          - unzip
+          - tar
+          - git
+          - ca-certificates
+          - apt-transport-https
+          - gnupg
+          - lsb-release
+          - software-properties-common
+        state: present
+
+    - name: Add deadsnakes PPA for Python
+      apt_repository:
+        repo: ppa:deadsnakes/ppa
+        state: present
+
+    - name: Install Python 3.9 and related packages
+      apt:
+        name:
+          - "python{{ python_version }}"
+          - "python{{ python_version }}-venv"
+          - "python{{ python_version }}-dev"
+        state: present
+
+    - name: Create Docker keyrings directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+    
+    - name: Download and dearmor Docker GPG key
+      shell: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+      args:
+        creates: /etc/apt/keyrings/docker.gpg
+        executable: /bin/bash
+
+    - name: Ensure permissions on Docker keyring file
+      file:
+        path: /etc/apt/keyrings/docker.gpg
+        mode: '0644'
+        owner: root
+        group: root
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable"
+        filename: docker
+        state: present
+        update_cache: yes
+
+
+    - name: Install Docker CE and related packages
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present     
+
+    - name: Add ubuntu user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Enable and start Docker service
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Download AWS CLI v2
+      get_url:
+        url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        dest: /tmp/awscliv2.zip
+
+    - name: Unzip AWS CLI v2
+      unarchive:
+        src: /tmp/awscliv2.zip
+        dest: /tmp
+        remote_src: yes
+
+    - name: Install AWS CLI v2
+      command: /tmp/aws/install
+      args:
+        creates: /usr/local/bin/aws
+
+    - name: Remove AWS CLI installer files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /tmp/awscliv2.zip
+        - /tmp/aws
+
+    - name: Download eksctl
+      get_url:
+        url: https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz
+        dest: /tmp/eksctl_Linux_amd64.tar.gz
+
+    - name: Extract eksctl
+      unarchive:
+        src: /tmp/eksctl_Linux_amd64.tar.gz
+        dest: /tmp
+        remote_src: yes
+
+    - name: Move eksctl to /usr/local/bin
+      copy:
+        src: /tmp/eksctl
+        dest: /usr/local/bin/eksctl
+        mode: '0755'
+        remote_src: yes
+
+    - name: Remove eksctl archive
+      file:
+        path: /tmp/eksctl_Linux_amd64.tar.gz
+        state: absent
+
+    - name: Download kubectl
+      get_url:
+        url: "https://dl.k8s.io/release/{{ lookup('url', 'https://dl.k8s.io/release/stable.txt') }}/bin/linux/amd64/kubectl"
+        dest: /usr/local/bin/kubectl
+        mode: '0755'
+
+    
