@@ -1,8 +1,7 @@
 ---
 - name: Bootstrap Ubuntu_Agent for CI/CD Feedback App
-  hosts: localhost
-  connect: local
-  become: true
+  hosts: Agent
+  
 
   vars:
     python_version: "3.9"
