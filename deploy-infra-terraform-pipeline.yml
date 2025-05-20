@@ -67,6 +67,5 @@ stages:
             displayName: terraform apply
             inputs:
               command: 'apply' 
-              commandOptions: 'auto approve'
               workingDirectory: 'feedback_app_infra/terraform'
               allowTelemetryCollection: false
