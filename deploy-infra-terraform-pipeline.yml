@@ -1,4 +1,4 @@
-trigger: none 
+trigger: none
 
 pool:
   name: self-hosted-local
