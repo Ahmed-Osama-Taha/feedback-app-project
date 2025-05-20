@@ -3,7 +3,6 @@
   hosts: Agent
   become: yes
   
-
   vars:
     python_version: "3.9"
  
