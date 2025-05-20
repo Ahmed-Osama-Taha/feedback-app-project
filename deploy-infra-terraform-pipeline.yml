@@ -1,0 +1,36 @@
+trigger:
+- main
+
+pool:
+  name: self-hosted-local
+
+stages:
+  - stage: init_validate_plan_infra
+    displayName: init, validate and plan stage
+    jobs:
+      - job:  init_validate_plan_infra
+        displayName: init, validate and plan
+        steps:
+          - checkout: self
+          - task: TerraformInstaller@2
+            displayName: installing latest terraform version
+          - task: TerraformCLI@2
+            displayName: terraform init
+            inputs:
+              command: 'init'
+              workingDirectory: 'feedback_app_infra/terraform'
+              backendType: 'aws'
+              allowTelemetryCollection: true
+              backendServiceAws: 'AWS Credential'
+          - task: TerraformCLI@2
+            displayName: terraform validate
+            inputs:
+              command: 'validate'
+              workingDirectory: 'feedback_app_infra/terraform'
+              allowTelemetryCollection: true
+          - task: TerraformCLI@2
+            displayName: terraform plan
+            inputs:
+              command: 'plan'
+              workingDirectory: 'feedback_app_infra/terraform'
+              allowTelemetryCollection: true
