@@ -10,7 +10,7 @@ variables:
 
 stages:
   - stage: init_validate_plan_deploy_infra
-    displayName: init, validate and plan stage
+    displayName: init, validate, plan and deploy stage
     jobs:
       - job:  init_validate_plan_infra
         displayName: init, validate and plan
