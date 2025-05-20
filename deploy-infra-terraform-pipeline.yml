@@ -3,6 +3,8 @@ trigger:
 
 pool:
   name: self-hosted-local
+  
+  
 
 stages:
   - stage: init_validate_plan_infra
@@ -14,6 +16,11 @@ stages:
           - checkout: self
           - task: TerraformInstaller@2
             displayName: installing latest terraform version
+          - task: AWSCLI@1
+            displayName: configuring aws credential using service connection
+            inputs:
+              awsCredentials: 'AWS Credential'
+              awsCommand: 'configure'
           - task: TerraformCLI@2
             displayName: terraform init
             inputs:
