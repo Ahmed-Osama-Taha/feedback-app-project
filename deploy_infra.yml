@@ -1,5 +1,11 @@
 trigger:
-- main
+ branches:
+  include:
+    - main
+ paths:
+   include:
+     - feedback_app_infra/ansible/**
+   
 
 pool:
   name: self-hosted-local
