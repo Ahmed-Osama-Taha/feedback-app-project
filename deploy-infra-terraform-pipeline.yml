@@ -52,11 +52,17 @@ stages:
           
 
   - stage: Deploy_infra
-    displayName: Deploy infra
+    displayName: Deploying the infra Stage
     jobs:
       - job: Deploy_infra
         displayName: terraform apply
         steps:
+          - checkout: self
+          - task: TerraformInstaller@2
+            displayName: installing latest terraform version
+            inputs:
+              terraformVersion: 'latest'
+              
           - task: TerraformCLI@2
             displayName: terraform apply
             inputs:
