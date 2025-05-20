@@ -49,6 +49,14 @@ stages:
               workingDirectory: 'feedback_app_infra/terraform'
               allowTelemetryCollection: false
 
+          
+
+  - stage: Deploy_infra
+    displayName: Deploy infra
+    jobs:
+      - job: Deploy_infra
+        displayName: terraform apply
+        steps:
           - task: TerraformCLI@2
             displayName: terraform apply
             inputs:
