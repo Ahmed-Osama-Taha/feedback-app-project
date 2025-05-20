@@ -4,7 +4,9 @@ trigger:
 pool:
   name: self-hosted-local
   
-  
+variables:
+  - group: "AWS Credential"
+
 
 stages:
   - stage: init_validate_plan_infra
@@ -14,16 +16,25 @@ stages:
         displayName: init, validate and plan
         steps:
           - checkout: self
+      
+          - script: |
+              export aws_access_key_id=$(aws_access_key_id)
+              export aws_secret_access_key=$(aws_secret_access_key)
+              export aws_session_token=$(aws_session_token)
+
           - task: TerraformInstaller@2
             displayName: installing latest terraform version
+            inputs:
+              terraformVersion: 'latest'
+           
           
           - task: TerraformCLI@2
             displayName: terraform init
             inputs:
-              providerServiceAws: "AWS Credential"
               command: 'init'
               workingDirectory: 'feedback_app_infra/terraform'
               allowTelemetryCollection: true
+
           - task: TerraformCLI@2
             displayName: terraform validate
             inputs:
