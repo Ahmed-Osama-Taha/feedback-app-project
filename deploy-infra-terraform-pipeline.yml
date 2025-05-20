@@ -27,23 +27,32 @@ stages:
             inputs:
               terraformVersion: 'latest'
            
-          
+           
           - task: TerraformCLI@2
             displayName: terraform init
             inputs:
               command: 'init'
               workingDirectory: 'feedback_app_infra/terraform'
-              allowTelemetryCollection: true
+              allowTelemetryCollection: false
 
           - task: TerraformCLI@2
             displayName: terraform validate
             inputs:
               command: 'validate'
               workingDirectory: 'feedback_app_infra/terraform'
-              allowTelemetryCollection: true
+              allowTelemetryCollection: false
+
           - task: TerraformCLI@2
             displayName: terraform plan
             inputs:
               command: 'plan'
               workingDirectory: 'feedback_app_infra/terraform'
-              allowTelemetryCollection: true
+              allowTelemetryCollection: false
+
+          - task: TerraformCLI@2
+            displayName: terraform apply
+            inputs:
+              command: 'apply' 
+              commandOptions: 'auto approve'
+              workingDirectory: 'feedback_app_infra/terraform'
+              allowTelemetryCollection: false
