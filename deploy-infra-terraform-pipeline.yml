@@ -22,6 +22,8 @@ stages:
               backendType: 'aws'
               allowTelemetryCollection: true
               backendServiceAws: 'AWS Credential'
+              backendAwsRegion: 'us-east-1'
+              backendAwsBucket: 'backend-terraform-bucket1234'
           - task: TerraformCLI@2
             displayName: terraform validate
             inputs:
