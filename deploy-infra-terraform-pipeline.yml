@@ -1,0 +1,61 @@
+trigger: none
+
+pool:
+  name: self-hosted-local
+  
+variables:
+  - group: "AWS Credential"
+
+
+stages:
+  - stage: init_validate_plan_deploy_infra
+    displayName: init, validate, plan and deploy stage
+    jobs:
+      - job:  init_validate_plan_infra
+        displayName: init, validate and plan
+        steps:
+          - checkout: self
+      
+          - script: |
+              export aws_access_key_id=$(aws_access_key_id)
+              export aws_secret_access_key=$(aws_secret_access_key)
+              export aws_session_token=$(aws_session_token)
+
+          - task: TerraformInstaller@2
+            displayName: installing latest terraform version
+            inputs:
+              terraformVersion: 'latest'
+           
+           
+          - task: TerraformCLI@2
+            displayName: terraform init
+            inputs:
+              command: 'init'
+              workingDirectory: 'feedback_app_infra/terraform'
+              allowTelemetryCollection: false
+
+          - task: TerraformCLI@2
+            displayName: terraform validate
+            inputs:
+              command: 'validate'
+              workingDirectory: 'feedback_app_infra/terraform'
+              allowTelemetryCollection: false
+
+          - task: TerraformCLI@2
+            displayName: terraform plan
+            inputs:
+              command: 'plan'
+              workingDirectory: 'feedback_app_infra/terraform'
+              allowTelemetryCollection: false
+              
+          - task: TerraformCLI@2
+            displayName: Deploy infra
+            inputs:
+              command: 'apply' 
+              workingDirectory: 'feedback_app_infra/terraform'
+              allowTelemetryCollection: false
+          
+
+  
+              
+          
