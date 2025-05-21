@@ -1,6 +1,9 @@
 trigger:
   - main
 
+pool:
+  name: self-hosted-local
+
 stages:
   - stage: CI
     displayName: CI Stage
