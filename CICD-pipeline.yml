@@ -39,6 +39,7 @@ stages:
               source .venv/bin/activate
               pip install -r src/feedback_backend/requirements.txt
               pip install pytest flask-testing
+              export PYTHONPATH=$(Build.SourcesDirectory)/src
               pytest
             displayName: run unit tests  
             workingDirectory: $(Build.SourcesDirectory)            
