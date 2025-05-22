@@ -3,6 +3,9 @@ trigger: none
 pool:
   name: self-hosted-local
 
+variables:
+ buildId: $(Build.BuildId)
+ 
 stages:
   - stage: CI
     displayName: CI Stage
@@ -25,7 +28,7 @@ stages:
               black src/feedback_backend/app.py            # Auto-format code with Black and isort 
               isort src/feedback_backend/app.py
             displayName: "Run Linting"  
-            workingDirectory: $(Build.SourcesDirctory)
+            workingDirectory: $(Build.SourcesDirectory)
             
       - job: Test
         dependsOn: Lint
@@ -39,5 +42,4 @@ stages:
               pip install pytest flask-testing
               pytest
             displayName: run unit tests  
-            workingDirectory: $(Build.SourcesDirctory)
-            
+            workingDirectory: $(Build.SourcesDirectory)            
