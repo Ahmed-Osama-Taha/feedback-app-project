@@ -2,6 +2,7 @@ trigger: none
 
 pool:
   name: self-hosted-local
+ 
 
 
  
@@ -42,4 +43,21 @@ stages:
               export PYTHONPATH=$(Build.SourcesDirectory)/src
               pytest
             displayName: run unit tests  
-            workingDirectory: $(Build.SourcesDirectory)            
+            workingDirectory: $(Build.SourcesDirectory)      
+
+      - job: SonarQube            
+        dependsOn: Test
+        displayName: Check Code Quality Using SonarQube
+        steps:
+          - task: SonarCloudPrepare@3
+            inputs:
+              SonarQube: 'SonarQube credential'
+              organization: 'ahmedosamataha2'
+              scannerMode: 'cli'
+              configMode: 'file'
+          - task: SonarCloudAnalyze@3
+            inputs:
+              jdkversion: 'JAVA_HOME_17_X64'
+          - task: SonarCloudPublish@3
+            inputs:
+              pollingTimeoutSec: '300'
