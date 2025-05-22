@@ -49,6 +49,7 @@ stages:
         dependsOn: Test
         displayName: Check Code Quality Using SonarQube
         steps:
+          - checkout: self 
           - task: SonarCloudPrepare@3
             inputs:
               SonarQube: 'SonarQube credential'
