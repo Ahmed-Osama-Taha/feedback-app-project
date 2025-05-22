@@ -60,7 +60,7 @@ stages:
               cliProjectKey: 'ahmedosamataha2_Ahmeds-first-project'
               cliProjectName: 'FeedBack-App'
               extraProperties: |
-                sonar.sources=src/note_backend
+                sonar.sources=src/feedback_backend
                 sonar.python.coverage.reportPaths=$(System.DefaultWorkingDirectory)/coverage.xml
                 sonar.exclusions=**/tests/**
                 sonar.python.version=3.9
