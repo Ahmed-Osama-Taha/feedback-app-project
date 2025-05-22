@@ -1,0 +1,95 @@
+trigger: none
+
+pool:
+  name: self-hosted-local
+ 
+
+
+ 
+stages:
+  - stage: CI
+    displayName: CI Stage
+    jobs:
+      - job: Lint
+        displayName: Linting Backend
+        steps:
+          - checkout: self
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.9'
+              addToPath: true    # Prepends the retrieved Python version to the PATH environment variable to make it available in subsequent tasks or scripts without using the output variable.
+          - script: |
+              python3.9 -m venv .venv
+              source .venv/bin/activate
+              python3.9 get-pip.py 
+              pip install pylint flake8 black isort 
+              pylint src/feedback_backend/app.py           # Lint with Pylint (checks for code quality and style issues (rates the code out of 10))
+              flake8 src/feedback_backend/app.py           # Check PEP 8 and complexity with Flake8 (Ensures code follows Python style guide)
+              black src/feedback_backend/app.py            # Auto-format code with Black and isort 
+              isort src/feedback_backend/app.py
+            displayName: "Run Linting"  
+            workingDirectory: $(Build.SourcesDirectory)
+            
+      - job: Test
+        dependsOn: Lint
+        displayName: Run unit tests with coverage
+        steps:
+          - checkout: self
+          - script: |
+             python3.9 -m venv .venv
+             source .venv/bin/activate
+             pip install -r src/feedback_backend/requirements.txt
+             pip install coverage pytest pytest-cov flask-testing
+             export PYTHONPATH=$(Build.SourcesDirectory)/src
+             cd src/feedback_backend
+             coverage run -m pytest ../../tests/
+             coverage xml
+            displayName: Run unit tests with coverage 
+            workingDirectory: $(Build.SourcesDirectory)   
+
+      - job: SonarQube            
+        dependsOn: Test
+        displayName: Check Code Quality Using SonarQube
+        steps:
+          - checkout: self 
+          - script: |
+              cd src/feedback_frontend/src
+              npm install
+              npm run test -- --coverage --watchAll=false
+            displayName: Run React tests and generate coverage
+
+          - task: SonarCloudPrepare@3
+            inputs:
+              SonarCloud: 'SonarQube credential'  # Make sure this is a real SonarCloud service connection
+              organization: 'ahmedosamataha2'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'ahmedosamataha2_Ahmeds-first-project'
+              cliProjectName: 'FeedBack-App'
+              cliSources: |
+                src/feedback_backend
+                src/feedback_frontend
+              extraProperties: |
+                sonar.projectVersion=1.0
+                sonar.sourceEncoding=UTF-8
+            
+                sonar.python.version=3.9
+                sonar.tests=tests
+                sonar.test.inclusions=tests/**/*.py
+                sonar.exclusions=**/__pycache__/**,**/*.pyc,**/migrations/**
+                sonar.coverage.exclusions=**/tests/**,**/__init__.py
+                sonar.python.coverage.reportPaths=coverage.xml
+              
+                
+                sonar.test.inclusions=src/feedback_frontend/**/*.test.js,src/feedback_frontend/**/*.spec.js
+                sonar.exclusions=**/node_modules/**,**/dist/**
+                sonar.javascript.lcov.reportPaths=coverage/lcov.info
+
+                sonar.verbose=true
+
+          - task: SonarCloudAnalyze@3
+            inputs:
+              jdkversion: 'JAVA_HOME_17_X64'
+          - task: SonarCloudPublish@3
+            inputs:
+              pollingTimeoutSec: '300'
