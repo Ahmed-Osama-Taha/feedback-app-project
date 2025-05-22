@@ -18,7 +18,6 @@ stages:
               versionSpec: '3.9'
               addToPath: true    # Prepends the retrieved Python version to the PATH environment variable to make it available in subsequent tasks or scripts without using the output variable.
           - script: |
-              sudo  rm -rf .venv
               python3.9 -m venv .venv
               source .venv/bin/activate
               python3.9 get-pip.py 
