@@ -58,10 +58,11 @@ stages:
               scannerMode: 'cli'
               configMode: 'manual'
               cliProjectKey: 'ahmedosamataha2_Ahmeds-first-project'
-              extraProperties: |                   # Define SonarQube properties here
-                sonar.projectName=FeedBack-App
-                sonar.sources=src/feedback_backend
-                sonar.language=py                  # Add language (Python)
+              cliProjectName: 'FeedBack-App'
+              extraProperties: |
+                sonar.sources=src/note_backend
+                sonar.python.coverage.reportPaths=$(System.DefaultWorkingDirectory)/coverage.xml
+                sonar.exclusions=**/tests/**
                 sonar.python.version=3.9
           - task: SonarCloudAnalyze@3
             inputs:
