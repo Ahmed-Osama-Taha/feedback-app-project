@@ -44,6 +44,7 @@ stages:
              cd src/feedback_backend
              coverage run -m pytest ../../tests/
              coverage xml
+            displayName: Run unit tests with coverage 
             workingDirectory: $(Build.SourcesDirectory)   
 
       - job: SonarQube            
