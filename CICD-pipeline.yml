@@ -57,8 +57,8 @@ stages:
               organization: 'ahmedosamataha2'
               scannerMode: 'cli'
               configMode: 'manual'
+              cliProjectKey: 'ahmedosamataha2_Ahmeds-first-project'
               extraProperties: |                   # Define SonarQube properties here
-                sonar.projectKey=ahmedosamataha2_Ahmeds-first-project
                 sonar.projectName=FeedBack-App
                 sonar.sources=src/feedback_backend
                 sonar.language=py                  # Add language (Python)
