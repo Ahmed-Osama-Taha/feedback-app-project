@@ -1,4 +1,4 @@
-from feedback_backend.app import app.py
+from feedback_backend import app
 
 def test_get_messages_returns_200():
     with app.test_client() as client:
