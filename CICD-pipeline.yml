@@ -50,12 +50,16 @@ stages:
         displayName: Check Code Quality Using SonarQube
         steps:
           - checkout: self 
+          
           - task: SonarCloudPrepare@3
             inputs:
               SonarQube: 'SonarQube credential'
               organization: 'ahmedosamataha2'
               scannerMode: 'cli'
-              configMode: 'file'
+              configMode: 'manual'
+              cliProjectKey: 'ahmedosamataha2_Ahmeds-first-project'
+              cliProjectName: 'FeedBack-App'
+              cliSources: 'src/feedback_backend'
           - task: SonarCloudAnalyze@3
             inputs:
               jdkversion: 'JAVA_HOME_17_X64'
