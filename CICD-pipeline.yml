@@ -25,7 +25,7 @@ stages:
               black src/feedback_backend/app.py            # Auto-format code with Black and isort 
               isort src/feedback_backend/app.py
             displayName: "Run Linting"  
-            workingDirectory: $(Build.sourceDirctory)
+            workingDirectory: $(Build.SourcesDirctory)
             
       - job: Test
         dependsOn: Lint
@@ -39,5 +39,5 @@ stages:
               pip install pytest flask-testing
               pytest
             displayName: run unit tests  
-            workingDirectory: $(Build.sourceDirctory)
+            workingDirectory: $(Build.SourcesDirctory)
             
