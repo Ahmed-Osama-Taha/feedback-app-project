@@ -57,9 +57,12 @@ stages:
               organization: 'ahmedosamataha2'
               scannerMode: 'cli'
               configMode: 'manual'
-              cliProjectKey: 'ahmedosamataha2_Ahmeds-first-project'
-              cliProjectName: 'FeedBack-App'
-              cliSources: 'src/feedback_backend'
+              extraProperties: |                   # Define SonarQube properties here
+                sonar.projectKey=ahmedosamataha2_Ahmeds-first-project
+                sonar.projectName=FeedBack-App
+                sonar.sources=src/feedback_backend
+                sonar.language=py                  # Add language (Python)
+                sonar.python.version=3.9
           - task: SonarCloudAnalyze@3
             inputs:
               jdkversion: 'JAVA_HOME_17_X64'
