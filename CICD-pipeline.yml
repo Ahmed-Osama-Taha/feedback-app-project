@@ -53,7 +53,7 @@ stages:
         steps:
           - checkout: self 
           - script: |
-              cd src/feedback_frontend
+              cd src/feedback_frontend/src
               npm install
               npm run test -- --coverage --watchAll=false
             displayName: Run React tests and generate coverage
