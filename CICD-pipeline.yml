@@ -1,5 +1,4 @@
-trigger:
-  - main
+trigger: none
 
 pool:
   name: self-hosted-local
@@ -17,11 +16,28 @@ stages:
               versionSpec: '3.9'
               addToPath: true    # Prepends the retrieved Python version to the PATH environment variable to make it available in subsequent tasks or scripts without using the output variable.
           - script: |
+              sudo python3.9 -m venv .venv
+              sudo source .venv/bin/activate
               sudo python3.9 get-pip.py 
               pip install pylint flake8 black isort 
-              pylint src/feedback_backend/app.py           # Lint with Pylint (checks for code quality and style issues)
+              pylint src/feedback_backend/app.py           # Lint with Pylint (checks for code quality and style issues (rates the code out of 10))
               flake8 src/feedback_backend/app.py           # Check PEP 8 and complexity with Flake8 (Ensures code follows Python style guide)
               black src/feedback_backend/app.py            # Auto-format code with Black and isort 
               isort src/feedback_backend/app.py
             displayName: "Run Linting"  
-              
+            workingDirectory: $(Build.sourceDirctory)
+            
+      - job: Test
+        dependsOn: Lint
+        displayName: unit test backend
+        steps:
+          - checkout: self
+          - script: |
+              sudo python3.9 -m venv .venv
+              sudo source .venv/bin/activate
+              pip install -r src/feedback_backend/requirements.txt
+              pip install pytest flask-testing
+              pytest
+            displayName: run unit tests  
+            workingDirectory: $(Build.sourceDirctory)
+            
