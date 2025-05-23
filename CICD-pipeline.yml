@@ -71,7 +71,7 @@ stages:
                 sonar.test.inclusions=tests/**/*.py
                 sonar.exclusions=**/__pycache__/**,**/*.pyc,**/migrations/**
                 sonar.coverage.exclusions=**/tests/**,**/__init__.py
-                sonar.python.coverage.reportPaths=coverage.xml
+                sonar.python.coverage.reportPaths=src/feedback_backend/coverage.xml
 
                 sonar.verbose=true
 
