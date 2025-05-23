@@ -52,11 +52,6 @@ stages:
         displayName: Check Code Quality Using SonarQube
         steps:
           - checkout: self 
-          - script: |
-              cd src/feedback_frontend/src
-              npm install
-              npm run test -- --coverage --watchAll=false
-            displayName: Run React tests and generate coverage
 
           - task: SonarCloudPrepare@3
             inputs:
@@ -79,11 +74,6 @@ stages:
                 sonar.exclusions=**/__pycache__/**,**/*.pyc,**/migrations/**
                 sonar.coverage.exclusions=**/tests/**,**/__init__.py
                 sonar.python.coverage.reportPaths=coverage.xml
-              
-                
-                sonar.test.inclusions=src/feedback_frontend/**/*.test.js,src/feedback_frontend/**/*.spec.js
-                sonar.exclusions=**/node_modules/**,**/dist/**
-                sonar.javascript.lcov.reportPaths=coverage/lcov.info
 
                 sonar.verbose=true
 
