@@ -43,7 +43,6 @@ stages:
              export PYTHONPATH=$(Build.SourcesDirectory)/src
              coverage run -m pytest tests/
              coverage xml
-             cat coverage.xml
             displayName: Run unit tests with coverage 
             workingDirectory: $(Build.SourcesDirectory)   
 
@@ -81,3 +80,16 @@ stages:
           - task: SonarCloudPublish@3
             inputs:
               pollingTimeoutSec: '300'
+
+      - job: Build       
+        dependsOn: SonarQube
+        displayName: Build and Push Backend Images
+        steps:
+          - checkout: self
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'Docker Registry'
+              repository: 'ahmedosamataha/feedback_app'
+              command: 'buildAndPush'
+              Dockerfile: 'src/feedback_backend/Dockerfile'
+          
