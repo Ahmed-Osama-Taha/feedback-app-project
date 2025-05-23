@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ahmedhedihed/feedback-frontend:${BUILD_BUILDID}
+        image: ahmedosamataha/feedback_frontend
         ports:
         - containerPort: 80
 ---
