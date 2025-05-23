@@ -41,10 +41,8 @@ stages:
              pip install -r src/feedback_backend/requirements.txt
              pip install coverage pytest pytest-cov flask-testing
              export PYTHONPATH=$(Build.SourcesDirectory)/src
-             cd src/feedback_backend
-             coverage run -m pytest ../../tests/
+             coverage run -m pytest tests/
              coverage xml
-             mv src/feedback_backend/coverage.xml coverage.xml
             displayName: Run unit tests with coverage 
             workingDirectory: $(Build.SourcesDirectory)   
 
