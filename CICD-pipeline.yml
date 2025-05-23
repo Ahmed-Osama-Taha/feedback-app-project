@@ -39,7 +39,7 @@ stages:
              python3.9 -m venv .venv
              source .venv/bin/activate
              pip install -r src/feedback_backend/requirements.txt
-             pip install coverage pytest pytest-cov flask-testing
+             pip install coverage pytest flask-testing
              export PYTHONPATH=$(Build.SourcesDirectory)/src
              coverage run -m pytest tests/
              coverage xml
@@ -83,13 +83,26 @@ stages:
 
       - job: Build       
         dependsOn: SonarQube
-        displayName: Build and Push Backend Images
+        displayName: Build and Push Docker Images
         steps:
           - checkout: self
           - task: Docker@2
+            displayName: Build and Push Backend Image
             inputs:
               containerRegistry: 'Docker Registry'
-              repository: 'ahmedosamataha/feedback_app'
+              repository: 'ahmedosamataha/feedback_backend'
               command: 'buildAndPush'
               Dockerfile: 'src/feedback_backend/Dockerfile'
+              tags: $(Build.BuildId)
+              buildContext: $(Build.SourcesDirectory)/src/feedback_backend
+
+          - task: Docker@2
+            displayName: Build and Push frontend Image
+            inputs:
+              containerRegistry: 'Docker Registry'
+              repository: 'ahmedosamataha/feedback_frontend'
+              command: 'buildAndPush'
+              Dockerfile: 'src/feedback_frontend/Dockerfile'
+              tags: $(Build.BuildId)
+              buildContext: $(Build.SourcesDirectory)/src/feedback_frontend    
           
