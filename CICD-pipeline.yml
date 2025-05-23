@@ -43,6 +43,7 @@ stages:
              export PYTHONPATH=$(Build.SourcesDirectory)/src
              coverage run -m pytest tests/
              coverage xml
+             cat coverage.xml
             displayName: Run unit tests with coverage 
             workingDirectory: $(Build.SourcesDirectory)   
 
