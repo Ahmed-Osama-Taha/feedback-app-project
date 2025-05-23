@@ -116,7 +116,7 @@ stages:
               command: 'buildAndPush'
               Dockerfile: 'src/feedback_frontend/src/Dockerfile'
               tags: $(Build.BuildId)
-              buildContext: $(Build.SourcesDirectory)/src/feedback_frontend/    
+              buildContext: $(Build.SourcesDirectory)/src/feedback_frontend/src    
 
   - stage: CD
     dependsOn: CI
