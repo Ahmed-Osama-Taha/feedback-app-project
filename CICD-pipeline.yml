@@ -2,6 +2,15 @@ trigger: none
 
 pool:
   name: self-hosted-local
+
+parameters:
+  - name: environment
+    type: string
+    default: dev
+    values:
+      - dev
+      - stagging
+      - prod 
  
 
 
@@ -105,4 +114,9 @@ stages:
               Dockerfile: 'src/feedback_frontend/Dockerfile'
               tags: $(Build.BuildId)
               buildContext: $(Build.SourcesDirectory)/src/feedback_frontend    
-          
+
+  - stage: CD
+    displayName: CD Stage
+    jobs:
+      - job: CD
+        displayName:         
