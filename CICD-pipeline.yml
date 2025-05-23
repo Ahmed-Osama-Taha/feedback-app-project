@@ -3,6 +3,9 @@ trigger: none
 pool:
   name: self-hosted-local
 
+variables:
+  - group: "AWS Credential"
+
 parameters:
   - name: environment
     type: string
@@ -119,4 +122,14 @@ stages:
     displayName: CD Stage
     jobs:
       - job: CD
-        displayName:         
+        displayName: Deploy to EKS
+        steps:
+          - ${{ if eq(parameters.environment, 'dev') }}:
+            - script: |
+                export aws_access_key_id=$(aws_access_key_id)
+                export aws_secret_access_key=$(aws_secret_access_key)
+                export aws_session_token=$(aws_session_token)
+                aws eks update-kubeconfig --name ahmed-feedback-app-eks
+                kubectl create ns dev
+                kubectl apply -f $(Build.SourcesDirectory)/k8s/  -n $(parameters.environment)
+              displayName: Deploy app to the Dev environment  
