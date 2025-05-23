@@ -119,6 +119,7 @@ stages:
               buildContext: $(Build.SourcesDirectory)/src/feedback_frontend    
 
   - stage: CD
+    dependsOn: CI
     displayName: CD Stage
     jobs:
       - job: CD
@@ -129,7 +130,10 @@ stages:
                 export aws_access_key_id=$(aws_access_key_id)
                 export aws_secret_access_key=$(aws_secret_access_key)
                 export aws_session_token=$(aws_session_token)
+                sed -i '/\image: ahmedhedihed/feedback-backend:81/*\image: ahmedosamataha/feedback_backend:$(build.BuildId)' k8s/backend-deployment.yaml
+
                 aws eks update-kubeconfig --name ahmed-feedback-app-eks
                 kubectl create ns dev
                 kubectl apply -f $(Build.SourcesDirectory)/k8s/  -n $(parameters.environment)
               displayName: Deploy app to the Dev environment  
+              workingDirectory: $(Build.SourcesDirectory)
