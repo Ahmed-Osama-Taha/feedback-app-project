@@ -44,6 +44,7 @@ stages:
              cd src/feedback_backend
              coverage run -m pytest ../../tests/
              coverage xml
+             mv src/feedback_backend/coverage.xml coverage.xml
             displayName: Run unit tests with coverage 
             workingDirectory: $(Build.SourcesDirectory)   
 
@@ -71,7 +72,7 @@ stages:
                 sonar.test.inclusions=tests/**/*.py
                 sonar.exclusions=**/__pycache__/**,**/*.pyc,**/migrations/**
                 sonar.coverage.exclusions=**/tests/**,**/__init__.py
-                sonar.python.coverage.reportPaths=src/feedback_backend/coverage.xml
+                sonar.python.coverage.reportPaths=coverage.xml
 
                 sonar.verbose=true
 
