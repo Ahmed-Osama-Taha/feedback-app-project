@@ -133,7 +133,7 @@ stages:
                 export aws_session_token=$(aws_session_token)
                 sed -i "s|image: ahmedosamataha/feedback_backend.*|image: ahmedosamataha/feedback_backend:$(Build.BuildId)|" k8s/backend-deployment.yaml
                 sed -i "s|image: ahmedosamataha/feedback_frontend.*|image: ahmedosamataha/feedback_frontend:$(Build.BuildId)|" k8s/frontend-deployment.yaml
-                aws eks update-kubeconfig --name ahmed-feedback-app-eks
+                aws eks update-kubeconfig --name ahmed-feedback-app-eks --region us-east-1
                 kubectl create ns dev
                 kubectl apply -f $(Build.SourcesDirectory)/k8s/  -n $(parameters.environment)
               displayName: Deploy app to the Dev environment  
