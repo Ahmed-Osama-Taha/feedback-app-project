@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name.postgres}}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{.Values.name.postgres}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name.postgres}}
+    spec:
+      containers:
+      - name: {{.Values.name.postgres}}
+        image: {{.Values.image.postgres}}:{{.Values.tags.postgres}}
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: {{.Values.env.postgres.secretKey}}
+        ports:
+        - containerPort: {{.Values.containerPort.postgres}}
+        volumeMounts:
+        - name: {{.Values.volumeMounts.postgres.volumeNameData}}
+          mountPath: {{.Values.volumeMounts.postgres.mountPathData}}
+        - name: {{.Values.volumeMounts.postgres.volumeNameInitScript}}
+          mountPath: {{.Values.volumeMounts.postgres.mountPathInitScript}}
+      volumes:
+      - name: {{.Values.volumes.postgres.volumeNameData}}
+        emptyDir: {}
+      - name: {{.Values.volumes.postgres.volumeNameInitScript}}
+        configMap:
+          name: {{.Values.configMap.postgres.name}} 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.service.postgres.name}}
+spec:
+  ports:
+    - port: {{.Values.service.postgres.port}}
+  selector:
+    app: {{.Values.name.postgres}}

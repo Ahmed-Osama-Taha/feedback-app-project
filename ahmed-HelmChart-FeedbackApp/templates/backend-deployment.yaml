@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.name.backend }}
+  labels:
+    {{- include "ahmed-FeedbackApp-HelmChart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name.backend }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name.backend }}
+    spec:
+      containers:
+      - name: {{ .Values.name.backend }}
+        image: {{ .Values.image.backend }}:{{ .Chart.AppVersion }}
+        ports:
+        - containerPort: {{ .Values.containerPort.backend }}
+        env:
+        - name: DB_HOST
+          value: {{ .Values.env.backend.DBHostName }}
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: {{ .Values.env.backend.secretKey }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.backend.name }}
+spec:
+  selector:
+    app: {{ .Values.name.backend }}
+  ports:
+    - port: {{ .Values.service.backend.port }}
+      

@@ -1,0 +1,84 @@
+# Default values for ahmed-FeedbackApp-HelmChart.
+# This is a YAML-formatted file.
+
+
+name:
+  backend: backend
+  frontend: frontend
+  postgres: postgres
+
+replicaCount: 1
+
+
+image:
+  backend: ahmedosamataha/feedback_backend
+  frontend: ahmedosamataha/feedback_frontend
+  postgres: postgres
+
+tags:
+  backend: ""
+  frontend: ""
+  postgres: "13"
+
+containerPort:
+  backend: 5000
+  frontend: 80
+  postgres: 5432
+
+env:
+  backend:
+    envName_1: DB_HOST
+    DBHostName: postgres-service
+    envName_2: DB_PASSWORD
+    secretName: db-secret
+    secretKey: password
+  postgres:
+    envName_1: POSTGRES_PASSWORD
+    secretName: db-secret
+    secretKey: password  
+
+service:
+  backend:
+    name: backend-service
+    type: ClusterIP
+    port: 5000
+  frontend:
+    name: frontend-service
+    type: NodePort
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  postgres:
+    name: postgres-service
+    type: ClusterIP
+    port: 5432  
+
+Secrets:
+  postgres:
+    name: db-secret
+    type: Opaque
+    data:
+      password: cGFzc3dvcmQ=  # base64 encoded 'password'
+
+configMap:
+  postgres:
+    name: postgres-init-script
+    data:
+      sql: |
+        CREATE DATABASE feedback;
+        \connect feedback;
+        CREATE TABLE messages (
+            id SERIAL PRIMARY KEY,
+            text TEXT
+        );
+volumeMounts:
+  postgres:
+    volumeNameData: pgdata
+    mountPathData: /var/lib/postgresql/data
+    volumeNameInitScript: init-script
+    mountPathInitScript: /docker-entrypoint-initdb.d/
+
+volumes:
+  postgres:
+    volumeNameData: pgdata
+    volumeNameInitScript: init-script

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.postgres.name }}
+data:
+  init.sql: |
+    {{ .Values.configMap.postgres.data.sql | nindent 4 }}
