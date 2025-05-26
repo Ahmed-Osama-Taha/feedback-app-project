@@ -140,3 +140,16 @@ stages:
                 kubectl apply -f $(Build.SourcesDirectory)/k8s/  -n dev
               displayName: Deploy app to the Dev environment  
               workingDirectory: $(Build.SourcesDirectory)
+
+          - ${{ if eq(parameters.environment, 'stagging') }}:
+            - task: HelmInstaller@1
+              displayName: installing helm 
+              inputs:
+                helmVersionToInstall: 'latest'   
+            - script: |
+                curl -fL https://install-cli.jfrog.io | sh
+              displayName: installing Jfrog cli
+            - script: |
+                 
+
+                   
