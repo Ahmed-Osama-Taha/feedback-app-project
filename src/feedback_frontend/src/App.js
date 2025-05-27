@@ -50,7 +50,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Feedback App</h1>
+      <h1>👾 Ahmed Ultimate CI/CD 🥷</h1>
       <MessageForm onAddMessage={handleAddMessage} />
       <MessageList messages={messages} onDelete={handleDelete} />
     </div>

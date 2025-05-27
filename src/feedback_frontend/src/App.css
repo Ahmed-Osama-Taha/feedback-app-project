@@ -1,83 +1,95 @@
-/* App.css */
 body {
-    font-family: 'Inter', sans-serif;
-    background: #f2f4f8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px;
-    margin: 0;
-  }
-  
-  h1 {
-    color: #ffffff;
-    margin-bottom: 20px;
-  }
-  
-  form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-  }
-  
-  input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 300px;
-    transition: border 0.3s ease;
-  }
-  
-  input[type="text"]:focus {
-    border-color: #ee0a0a;
-    outline: none;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #006eff;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #0052cc;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-    width: 400px;
-  }
-  
-  li {
-    background: #050505;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    color: #444;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .delete-btn {
-    background: #ff4d4f;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .delete-btn:hover {
-    background: #cc0000;
-  }
-  
+  font-family: 'Inter', monospace;  /* monospace for hacker vibe */
+  background: #000000;  /* full black background */
+  color: #ff0000;       /* bright red text */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+  margin: 0;
+}
+
+h1 {
+  color: #ff0000;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-shadow: 0 0 10px #ff0000; /* glowing red text */
+  font-size: 3rem;
+}
+
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ff0000;
+  border-radius: 6px;
+  width: 300px;
+  background: #111;  /* dark background for input */
+  color: #ff0000;
+  transition: border 0.3s ease;
+}
+
+input[type="text"]::placeholder {
+  color: #660000;
+}
+
+input[type="text"]:focus {
+  border-color: #ff4444;
+  outline: none;
+  background: #220000;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #ff0000;
+  border: none;
+  color: black;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 700;
+}
+
+button:hover {
+  background-color: #cc0000;
+  color: white;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  width: 400px;
+}
+
+li {
+  background: #111;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #ff0000;
+  color: #ff4444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: monospace;
+}
+
+.delete-btn {
+  background: #cc0000;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #990000;
+}
