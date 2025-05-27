@@ -155,8 +155,7 @@ stages:
                 helm package ahmed-HelmChart-FeedbackApp                                           # package the updated helm chart
 
                 jf rt u "ahmed-FeedbackApp-HelmChart-0.$(Build.BuildId).0.tgz" "ahmed-helm-repo-helm/"  # uploading the updated chart to jfrog artifactory using jfrog cli
-                echo "Waiting for JFrog to index the chart..."
-                sleep 600
+                
               displayName: Update the helm chart with the new image tag and upload it to the repo in jfrog arifactory
               workingDirectory: $(Build.SourcesDirectory)
 
@@ -170,7 +169,7 @@ stages:
 
                 helm repo add ahmed-helm-repo https://trial5x3qdq.jfrog.io/artifactory/api/helm/ahmed-helm-repo-helm --username=$(username) --password=$(password)
                 helm repo update
-                helm upgrade --install feedback-app-$(Build.BuildId) ahmed-helm-repo/ahmed-HelmChart-FeedbackApp --version=0.$(Build.BuildId).0  -n staging
+                helm upgrade --install feedback-app-$(Build.BuildId) ahmed-helm-repo/ahmed-FeedbackApp-HelmChart --version=0.$(Build.BuildId).0  -n staging
               displayName: Deploy app Helm Chart to the staging environment
 
 
