@@ -51,6 +51,7 @@ function App() {
   return (
     <div className="App">
       <h1>👾 Ahmed Ultimate CI/CD 🥷</h1>
+      <div className="background-skull">💀</div>
       <MessageForm onAddMessage={handleAddMessage} />
       <MessageList messages={messages} onDelete={handleDelete} />
     </div>
