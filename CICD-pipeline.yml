@@ -156,7 +156,7 @@ stages:
 
                 jf rt u "ahmed-FeedbackApp-HelmChart-0.$(Build.BuildId).0.tgz" "ahmed-helm-repo-helm/"  # uploading the updated chart to jfrog artifactory using jfrog cli
                 echo "Waiting for JFrog to index the chart..."
-                sleep 300
+                sleep 600
               displayName: Update the helm chart with the new image tag and upload it to the repo in jfrog arifactory
               workingDirectory: $(Build.SourcesDirectory)
 
