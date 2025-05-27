@@ -149,8 +149,8 @@ stages:
                 helmVersionToInstall: 'latest' 
 
             - script: |
-                yq -i '.appVersion= "$(Build.BuildId)"' ahmed-HelmChart-FeedbackApp/Chart.yaml    # inject the new image tag in the helm chart 
-                yq -i '.version= 0.$(Build.BuildId).0' ahmed-HelmChart-FeedbackApp/Chart.yaml     # update the chart version
+                yq -i ".appVersion = \"$(Build.BuildId)\"" ahmed-HelmChart-FeedbackApp/Chart.yaml    # inject the new image tag in the helm chart 
+                yq -i ".version = \"0.$(Build.BuildId).0\"" ahmed-HelmChart-FeedbackApp/Chart.yaml     # update the chart version
 
                 helm package ahmed-HelmChart-FeedbackApp                                           # package the updated helm chart
 
