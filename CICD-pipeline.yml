@@ -166,9 +166,9 @@ stages:
 
                 aws eks update-kubeconfig --name ahmed-feedback-app-eks --region us-east-1
 
-                helm repo add ahmed-jfrog-helm-repo  https://trial5x3qdq.jfrog.io/artifactory/api/helm/ahmed-helm-repo-helm --username=$username --password=$password
+                helm repo add ahmed-helm-repo https://trial5x3qdq.jfrog.io/artifactory/api/helm/ahmed-helm-repo-helm --username=$(username) --password=$(password)
                 helm repo update
-                helm upgrade --install feedback-app-${BUILD_BUILDID} ahmed-jfrog-helm-repo/ahmed-HelmChart-FeedbackApp --version=0.${BUILD_BUILDID}.0  -n staging
+                helm upgrade --install feedback-app-$(Build.BuildId) ahmed-helm-repo/ahmed-HelmChart-FeedbackApp --version=0.$(Build.BuildId).0  -n staging
               displayName: Deploy app Helm Chart to the staging environment
 
 
