@@ -1,13 +1,16 @@
+/* App.css */
 body {
   font-family: 'Inter', monospace;  /* monospace for hacker vibe */
-  background: #000000;  /* full black background */
+  background: #000000 url('/skull.png') no-repeat center top; /* 👈 skull added */
+  background-size: 200px; /* 👈 optional size adjustment */
   color: #ff0000;       /* bright red text */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 50px;
+  padding: 200px 50px 50px; /* 👈 add top padding to not overlap skull */
   margin: 0;
 }
+
 
 h1 {
   color: #ff0000;
