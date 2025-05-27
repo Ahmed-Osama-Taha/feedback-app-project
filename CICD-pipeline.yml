@@ -172,6 +172,21 @@ stages:
                 helm upgrade --install feedback-app ahmed-helm-repo/ahmed-FeedbackApp-HelmChart --version=0.$(Build.BuildId).0  -n staging
               displayName: Deploy app Helm Chart to the staging environment
 
+          - ${{ if eq(parameters.environment, 'prod') }}:
+            - checkout: self
+            - script: |
+                 yq -i ".appVersion = \"$(Build.BuildId)\"" ahmed-FeedbackApp-HelmChart/Chart.yaml    # inject the new image tag in the helm chart 
+                 yq -i ".version = \"0.$(Build.BuildId).0\"" ahmed-FeedbackApp-HelmChart/Chart.yaml
+
+                 git add . 
+                 git commit -m"update image"
+                 git push azure_repos main --force
+              displayName: Update Helm chart with latest image and deploy to prod via Argo CD (Azure Repos git as source of truth)
+              workingDirectory: $(Build.SourcesDirectory)
+
+                
+                 
+
 
 
 
