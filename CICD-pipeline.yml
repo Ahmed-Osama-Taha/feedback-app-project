@@ -154,7 +154,7 @@ stages:
 
                 helm package ahmed-HelmChart-FeedbackApp                                           # package the updated helm chart
 
-                jf rt u "ahmed-HelmChart-FeedbackApp-0.$(Build.BuildId).0.tgz" "ahmed-helm-repo-helm/"  # uploading the updated chart to jfrog artifactory using jfrog cli
+                jf rt u "/home/ahmed/myagent/_work/1/s/ahmed-HelmChart-FeedbackApp-0.$(Build.BuildId).0.tgz" "ahmed-helm-repo-helm/"  # uploading the updated chart to jfrog artifactory using jfrog cli
               displayName: Update the helm chart with the new image tag and upload it to the repo in jfrog arifactory
               workingDirectory: $(Build.SourcesDirectory)
 
