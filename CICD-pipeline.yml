@@ -169,7 +169,7 @@ stages:
 
                 helm repo add ahmed-helm-repo https://trial5x3qdq.jfrog.io/artifactory/api/helm/ahmed-helm-repo-helm --username=$(username) --password=$(password)
                 helm repo update
-                helm upgrade --install feedback-app-$(Build.BuildId) ahmed-helm-repo/ahmed-FeedbackApp-HelmChart --version=0.$(Build.BuildId).0  -n staging
+                helm upgrade --install feedback-app ahmed-helm-repo/ahmed-FeedbackApp-HelmChart --version=0.$(Build.BuildId).0  -n staging
               displayName: Deploy app Helm Chart to the staging environment
 
 
