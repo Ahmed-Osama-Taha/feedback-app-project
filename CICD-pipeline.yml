@@ -5,6 +5,7 @@ pool:
 
 variables:
   - group: "AWS Credential"
+  - group: "JFrog Credentials"
 
 parameters:
   - name: environment
@@ -12,7 +13,7 @@ parameters:
     default: dev
     values:
       - dev
-      - stagging
+      - staging
       - prod 
  
 
@@ -141,15 +142,46 @@ stages:
               displayName: Deploy app to the Dev environment  
               workingDirectory: $(Build.SourcesDirectory)
 
-          - ${{ if eq(parameters.environment, 'stagging') }}:
+          - ${{ if eq(parameters.environment, 'staging') }}:
             - task: HelmInstaller@1
               displayName: installing helm 
               inputs:
-                helmVersionToInstall: 'latest'   
+                helmVersionToInstall: 'latest' 
+
             - script: |
-                curl -fL https://install-cli.jfrog.io | sh
-              displayName: installing Jfrog cli
+                yq -i '.appVersion= "$(Build.BuildId)"' ahmed-HelmChart-FeedbackApp/Charts.yaml    # inject the new image tag in the helm chart 
+                yq -i '.version: 0.$(Build.BuildId).0' ahmed-HelmChart-FeedbackApp/Charts.yaml     # update the chart version
+
+                helm package ahmed-HelmChart-FeedbackApp                                           # package the updated helm chart
+
+                jf rt u "ahmed-HelmChart-FeedbackApp-0.${BUILD_BUILDID}.0.tgz" "ahmed-helm-repo-helm/"  # uploading the updated chart to jfrog artifactory using jfrog cli
+              displayName: Update the helm chart with the new image tag and upload it to the repo in jfrog arifactory
+              workingDirectory: $(Build.SourcesDirectory)
+
             - script: |
+
+                aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                aws configure set aws_session_token $AWS_SESSION_TOKEN
+
+                aws eks update-kubeconfig --name ahmed-feedback-app-eks --region us-east-1
+
+                helm repo add ahmed-jfrog-helm-repo  https://trial5x3qdq.jfrog.io/artifactory/api/helm/ahmed-helm-repo-helm --username=$username --password=$password
+                helm repo update
+                helm upgrade --install feedback-app-${BUILD_BUILDID} ahmed-jfrog-helm-repo/ahmed-HelmChart-FeedbackApp --version=0.${BUILD_BUILDID}.0  -n staging
+              displayName: Deploy app Helm Chart to the staging environment
+
+
+
+
+                
+
+
+
+
+              
+
+                
                  
 
                    
