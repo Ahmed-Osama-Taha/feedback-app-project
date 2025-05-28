@@ -55,9 +55,21 @@ stages:
              pip install coverage pytest flask-testing
              export PYTHONPATH=$(Build.SourcesDirectory)/src
              coverage run -m pytest tests/
-             coverage xml
+             coverage xml -o coverage.xml             # for SonarQube
+             coverage html                            # optional (human-readable)
+             coverage report
+             coverage xml -o cobertura.xml            # for Azure DevOps UI
+
             displayName: Run unit tests with coverage 
-            workingDirectory: $(Build.SourcesDirectory)   
+            workingDirectory: 
+          - task: PublishCodeCoverageResults@2
+            inputs:
+              summaryFileLocation: '$(Build.SourcesDirectory)/cobertura.xml'
+            displayName: publish CodeCoverage to Azure UI  
+              
+              
+
+         
 
       - job: SonarQube            
         dependsOn: Test
