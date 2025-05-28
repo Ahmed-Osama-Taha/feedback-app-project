@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ahmedosamataha/feedback_frontend
+        image: ahmedosamataha/feedback_frontend:156
         ports:
         - containerPort: 80
 ---

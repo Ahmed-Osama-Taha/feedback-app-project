@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: ahmedosamataha/feedback_backend
+        image: ahmedosamataha/feedback_backend:156
         ports:
         - containerPort: 5000
         env:
