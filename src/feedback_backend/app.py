@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
+from prometheus_flask_exporter import PrometheusFlaskExporter
 import psycopg2
 import os
 
 
 app = Flask(__name__)
-
+PrometheusFlaskExporter(app)
 
 def get_db_conn():
     return psycopg2.connect(
