@@ -37,7 +37,7 @@ variable "node_groups" {
   default = {
     eks_node_group = {
       amiType = "ami-084568db4383264d4"
-      instance_type = "t2.medium"
+      instance_type = "t2.large"
       capacity_type = "ON_DEMAND"
       scaling_config = {
         desired_size = 2
