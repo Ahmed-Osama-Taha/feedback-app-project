@@ -16,7 +16,7 @@ spec:
       - name: backend
         image: ahmedosamataha/feedback_backend
         ports:
-        - containerPort: 5000
+        - containerPort: 5001
         env:
         - name: DB_HOST
           value: postgres-service
@@ -34,4 +34,4 @@ spec:
   selector:
     app: backend
   ports:
-    - port: 5000
+    - port: 5001
