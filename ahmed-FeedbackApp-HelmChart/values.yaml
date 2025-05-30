@@ -40,8 +40,10 @@ env:
 service:
   backend:
     name: backend-service
-    type: ClusterIP
+    type: NodePort
     port: 5000
+    targetPort: 5000
+    nodePort: 30081
   frontend:
     name: frontend-service
     type: NodePort
