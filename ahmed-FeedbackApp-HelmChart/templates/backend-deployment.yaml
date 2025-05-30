@@ -33,8 +33,10 @@ kind: Service
 metadata:
   name: {{ .Values.service.backend.name }}
 spec:
+  type: {{ .Values.service.backend.type }}
   selector:
     app: {{ .Values.name.backend }}
   ports:
     - port: {{ .Values.service.backend.port }}
-      
+  targetPort: {{ .Values.service.backend.targetPort }}
+  nodePort: {{ .Values.service.backend.nodePort }}
