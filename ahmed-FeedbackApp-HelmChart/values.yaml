@@ -21,7 +21,7 @@ tags:
   postgres: "13"
 
 containerPort:
-  backend: 5001
+  backend: 5000
   frontend: 80
   postgres: 5432
 
@@ -41,7 +41,7 @@ service:
   backend:
     name: backend-service
     type: ClusterIP
-    port: 5001
+    port: 5000
   frontend:
     name: frontend-service
     type: NodePort
