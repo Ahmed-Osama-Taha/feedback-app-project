@@ -55,9 +55,21 @@ stages:
              pip install coverage pytest flask-testing
              export PYTHONPATH=$(Build.SourcesDirectory)/src
              coverage run -m pytest tests/
-             coverage xml
+             coverage xml -o coverage.xml             # for SonarQube
+             coverage html                            # optional (human-readable)
+             coverage report
+             coverage xml -o cobertura.xml            # for Azure DevOps UI
+
             displayName: Run unit tests with coverage 
-            workingDirectory: $(Build.SourcesDirectory)   
+            workingDirectory: 
+          - task: PublishCodeCoverageResults@2
+            inputs:
+              summaryFileLocation: '$(Build.SourcesDirectory)/cobertura.xml'
+            displayName: publish CodeCoverage to Azure UI  
+              
+              
+
+         
 
       - job: SonarQube            
         dependsOn: Test
@@ -152,7 +164,11 @@ stages:
                 yq -i ".appVersion = \"$(Build.BuildId)\"" ahmed-FeedbackApp-HelmChart/Chart.yaml    # inject the new image tag in the helm chart 
                 yq -i ".version = \"0.$(Build.BuildId).0\"" ahmed-FeedbackApp-HelmChart/Chart.yaml     # update the chart version
 
+<<<<<<< HEAD
                 helm package ahmed-FeedbackApp-HelmChart                                    # package the updated helm chart
+=======
+                helm package ahmed-FeedbackApp-HelmChart                                           # package the updated helm chart
+>>>>>>> fb8b0da43707ab55c9ca7c624014727620a57aa0
 
                 jf rt u "ahmed-FeedbackApp-HelmChart-0.$(Build.BuildId).0.tgz" "ahmed-helm-repo-helm/"  # uploading the updated chart to jfrog artifactory using jfrog cli
                 
@@ -171,6 +187,21 @@ stages:
                 helm repo update
                 helm upgrade --install feedback-app ahmed-helm-repo/ahmed-FeedbackApp-HelmChart --version=0.$(Build.BuildId).0  -n staging
               displayName: Deploy app Helm Chart to the staging environment
+
+          - ${{ if eq(parameters.environment, 'prod') }}:
+            - checkout: self
+            - script: |
+                 yq -i ".appVersion = \"$(Build.BuildId)\"" ahmed-FeedbackApp-HelmChart/Chart.yaml    # inject the new image tag in the helm chart 
+                 yq -i ".version = \"0.$(Build.BuildId).0\"" ahmed-FeedbackApp-HelmChart/Chart.yaml
+
+                 git add . 
+                 git commit -m"update image"
+                 git push azure_repos main --force
+              displayName: Update Helm chart with latest image and deploy to prod via Argo CD (Azure Repos git as source of truth)
+              workingDirectory: $(Build.SourcesDirectory)
+
+                
+                 
 
 
 
