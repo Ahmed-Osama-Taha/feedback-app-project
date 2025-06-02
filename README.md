@@ -1,173 +1,58 @@
-# 📬 Feedback App (3-Tier Kubernetes Project with CI/CD)
+# 🚀 Ahmed Ultimate CI/CD – Feedback App
 
-A fully containerized and Kubernetes-ready feedback application consisting of:
+A fully automated, production-grade, 3-tier application showcasing end-to-end DevOps skills using Terraform, Azure DevOps, Argo CD, Helm, Prometheus, Grafana, and Vault.
 
-- 🖼️ **Frontend**: React app served via NGINX  
-- 🧠 **Backend**: Python Flask REST API  
-- 🛢️ **Database**: PostgreSQL 13  
-- 🔁 **CI/CD**: Azure DevOps YAML pipelines with self-hosted EC2 agents  
+## 🧰 Stack Overview
 
-Perfect for DevOps demos, Kubernetes practice, and hands-on CI/CD pipelines.
-
----
-
-## 🔧 Architecture
-
-```
-User Browser
-    ↓
-[ Frontend Service (React + NGINX) - Port 80 ]
-    ↓ /api/*
-[ Backend Service (Flask) - Port 5000 ]
-    ↓
-[ PostgreSQL Service - Port 5432 ]
-```
+| Layer        | Tech                                     |
+|--------------|------------------------------------------|
+| Infrastructure | Terraform (Custom AWS EKS + VPC modules) |
+| Configuration | Ansible (EC2 Agent Provisioning)         |
+| CI/CD        | Azure DevOps Pipelines, SonarCloud, Trivy |
+| Deployment   | Kubectl, Helm (with JFrog), Argo CD       |
+| Monitoring   | Prometheus, Grafana                       |
+| Secrets      | HashiCorp Vault                           |
+| App          | React (Frontend), Flask (Backend), PostgreSQL (DB) |
 
 ---
 
-## ⚙️ Tech Stack
+## 📦 Key DevOps Features
 
-| Layer         | Technology                 |
-|---------------|----------------------------|
-| Frontend      | React, served by NGINX     |
-| Backend       | Python 3.9, Flask API      |
-| Database      | PostgreSQL 13              |
-| CI/CD         | Azure DevOps Pipelines     |
-| Containers    | Docker                     |
-| Orchestration | Kubernetes (Amazon EKS)    |
-| Local Dev     | Docker Desktop + K8s       |
-
----
-
-## 📝 Features
-
-- Submit feedback messages via the React UI  
-- Retrieve and list feedback from PostgreSQL  
-- Delete feedback messages through the UI  
-- Containerized build & deploy pipeline with approvals and gating  
-
----
-
-## 🚀 Build & Push Docker Images
-
-> Replace `<your-dockerhub-username>` with your Docker Hub account name.
-
-### 🧠 Backend
-```bash
-cd src/feedback_backend
-docker build -t <your-dockerhub-username>/feedback-backend:<tag> .
-docker push <your-dockerhub-username>/feedback-backend:<tag>
-```
-
-### 🖼️ Frontend
-```bash
-cd src/feedback_frontend
-docker build -t <your-dockerhub-username>/feedback-frontend:<tag> .
-docker push <your-dockerhub-username>/feedback-frontend:<tag>
-```
+- **Custom Terraform modules** for EKS & VPC [[GitHub Modules](https://github.com/Ahmed-Osama-Taha/EKS-VPC-Terraform-Modules.git)]
+- **S3 remote backend with locking** for safe Terraform state management
+- **Ansible pipeline** to bootstrap and configure EC2 Azure DevOps agents
+- **CI pipeline** with:
+  - Linting (flake8, pylint, black, isort)
+  - Unit Testing & Coverage (pytest + `coverage.xml`)
+  - SonarCloud analysis (passed Quality Gate ✅)
+  - Trivy image scanning
+- **CD pipeline** (parameterized by environment):
+  - `dev`: `kubectl apply`
+  - `staging`: Helm chart deploy (via JFrog repo)
+  - `prod`: Argo CD auto-sync from prod branch
+- **Monitoring**:
+  - Prometheus + Flask metrics exporter
+  - Grafana dashboards with PromQL queries
+- **Secrets Management**:
+  - Vault integration with Kubernetes
+  - Sidecar agent injection with `vault.hashicorp.com/*` annotations
 
 ---
 
-## ☸️ Kubernetes Deployment (EKS or Docker Desktop)
+## 🌐 Demo & Monitoring Dashboards
 
-### 1️⃣ Create DB Secret and ConfigMap
-```bash
-kubectl apply -f k8s/db-secret.yaml
-kubectl apply -f k8s/postgres-init-configmap.yaml
-```
+- 🔥 Live App Preview: `http://13.218.221.1:30080`
+- 📊 Prometheus Metrics + Grafana Dashboard
+- 🔐 Vault Dashboard for Secret Injection
+- 🎯 Argo CD UI for GitOps Management
 
-### 2️⃣ Apply All Kubernetes Resources
-```bash
-kubectl apply -f k8s/
-```
-
-> This deploys:
-> - Frontend Deployment + Service  
-> - Backend Deployment + Service  
-> - PostgreSQL Deployment + Service  
-> - Secrets and ConfigMaps  
+> This project demonstrates my full capabilities as a DevOps engineer: automation, security, quality, and delivery.
 
 ---
 
-## 🌐 Access the Application
+## 🤝 Connect With Me
 
-### 🖥️ Via NodePort
-```bash
-kubectl get nodes -o wide
-# Use a node's public IP and port 30080
-http://<NODE_PUBLIC_IP>:30080
-```
-
-### 💻 Local Test (Port-forwarding)
-```bash
-kubectl port-forward svc/frontend-service 8081:80
-```
-➡️ Open in browser: [http://localhost:8081](http://localhost:8081)
-
----
-
-## 🔁 Azure DevOps Pipeline (CI/CD)
-
-- Lint and test the backend
-- Build and push backend/frontend Docker images
-- Replace image tag using token replacement
-- Deploy to Kubernetes with conditional production deployment
-- Manual validation before production rollout
-
-CI/CD pipeline defined in `azure-pipelines.yaml`.
-
----
-
-## 📂 Project Structure
-
-```
-.
-├── README.md
-├── azure-pipelines.yaml
-├── k8s/
-│   ├── backend-deployment.yaml
-│   ├── db-secret.yaml
-│   ├── frontend-deployment.yaml
-│   ├── postgres-deployment.yaml
-│   └── postgres-init-configmap.yaml
-│
-├── src/
-│   ├── feedback_backend/
-│   │   ├── app.py
-│   │   ├── Dockerfile
-│   ├── feedback_frontend/
-│   │   ├── public/
-│   │   ├── src/
-│   │   ├── nginx.conf
-│   │   └── Dockerfile
-│   └── feedback_db/
-│       └── init.sql
-│
-└── tests/
-    └── test_app.py
-```
-
----
-
-## 🧪 Local Development
-
-### Backend
-```bash
-cd src/feedback_backend
-pip install -r requirements.txt
-python app.py
-```
-
-### Frontend
-```bash
-cd src/feedback_frontend
-npm install
-npm start
-```
-
----
-
-## 🙌 Feedback & Contributions
-
-Pull requests and ideas welcome!  
-Star the repo if you found it useful ⭐
+- 📧 ahmedosamataha2@gmail.com
+- 💼 [LinkedIn](https://www.linkedin.com/in/ahmedosamataha2)
+- 📂 [Helm Repo](https://trial5x3qdq.jfrog.io/ui/native/ahmed-helm-repo-helm-local/)
+- 🌐 [Terraform Modules](https://github.com/Ahmed-Osama-Taha/EKS-VPC-Terraform-Modules.git)
