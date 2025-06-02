@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "vault-role"                      # Vault role name you created
+        vault.hashicorp.com/agent-inject-token: "true"
+        vault.hashicorp.com/agent-inject-secret-config.txt: "secret/feedback-app/db-secret"
+        vault.hashicorp.com/agent-inject-template-config.txt: |
+          {{- with secret "secret/feedback-app/db-secret" -}}
+          password={{ .Data.data.password }}
+          {{- end }}  
+    spec:
+      serviceAccountName: vault-feedback
+      containers:
+      - name: backend
+        image: ahmedosamataha/feedback_backend:160
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_HOST
+          value: postgres-service
+        
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: NodePort
+  selector:
+    app: backend
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30081

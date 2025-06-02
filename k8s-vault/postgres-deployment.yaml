@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "vault-role"
+        vault.hashicorp.com/agent-inject-token: "true"
+        vault.hashicorp.com/agent-inject-secret-config.txt: "secret/feedback-app/db-secret"
+        vault.hashicorp.com/agent-inject-template-config.txt: |
+          {{- with secret "secret/feedback-app/db-secret" -}}
+          {{ .Data.data.password }}
+          {{- end }}
+    spec:
+      serviceAccountName: vault-feedback
+      containers:
+      - name: postgres
+        image: postgres:13
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: pgdata
+          mountPath: /var/lib/postgresql/data
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d/
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            export POSTGRES_PASSWORD=$(cat /vault/secrets/config.txt)
+            exec docker-entrypoint.sh postgres
+      volumes:
+      - name: pgdata
+        emptyDir: {}
+      - name: init-script
+        configMap:
+          name: postgres-init-script
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
