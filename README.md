@@ -41,7 +41,7 @@ A fully automated, production-grade, 3-tier application showcasing end-to-end De
 
 ## 🌐 Demo & Monitoring Dashboards
 
-- 🔥 Live App Preview: `http://13.218.221.1:30080`
+- 🔥 Live App Preview: `http://localhost:30080`
 - 📊 Prometheus Metrics + Grafana Dashboard
 - 🔐 Vault Dashboard for Secret Injection
 - 🎯 Argo CD UI for GitOps Management
@@ -52,7 +52,29 @@ A fully automated, production-grade, 3-tier application showcasing end-to-end De
 
 ## 🤝 Connect With Me
 
-- 📧 ahmedosamataha2@gmail.com
-- 💼 [LinkedIn](https://www.linkedin.com/in/ahmedosamataha2)
+- 📧 ahmed.osama.taha2@gmail.com
+- 💼 [LinkedIn](https://www.linkedin.com/in/ahmedosamataha)
 - 📂 [Helm Repo](https://trial5x3qdq.jfrog.io/ui/native/ahmed-helm-repo-helm-local/)
 - 🌐 [Terraform Modules](https://github.com/Ahmed-Osama-Taha/EKS-VPC-Terraform-Modules.git)
+
+
+
+---
+
+## 📸 Screenshots
+
+| Feature        | Screenshot |
+|----------------|------------|
+| SonarCloud Analysis | ![SonarCloud](screenshots/sonarqube.png) |
+| ArgoCD Deployment | ![ArgoCD](screenshots/argocd.png) |
+| Prometheus Metrics | ![Prometheus](screenshots/prometheus.png) |
+| Grafana Dashboard | ![Grafana](screenshots/grafana.png) |
+| Vault Secrets | ![Vault](screenshots/vault.png) |
+| Live App | ![Web App](screenshots/webapp.png) |
+
+> All screenshots stored in `screenshots/` folder.
+
+
+---
+
+
