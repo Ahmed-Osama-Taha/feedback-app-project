@@ -61,20 +61,31 @@ A fully automated, production-grade, 3-tier application showcasing end-to-end De
 
 ---
 
+
 ## 📸 Screenshots
 
-| Feature        | Screenshot |
-|----------------|------------|
-| SonarCloud Analysis | ![SonarCloud](screenshots/sonarqube.png) |
-| ArgoCD Deployment | ![ArgoCD](screenshots/argocd.png) |
-| Prometheus Metrics | ![Prometheus](screenshots/prometheus.png) |
-| Grafana Dashboard | ![Grafana](screenshots/grafana.png) |
-| Vault Secrets | ![Vault](screenshots/vault.png) |
-| Live App | ![Web App](screenshots/webapp.png) |
-
-> All screenshots stored in `screenshots/` folder.
+### 🔍 SonarCloud Analysis  
+![SonarCloud](https://user-images.githubusercontent.com/126457491/287470148-6e045979-91c4-4090-8618-17e0a6c7ab34.png)
 
 
----
+### 🚀 ArgoCD Deployment  
+![ArgoCD](https://user-images.githubusercontent.com/126457491/287472209-6a5de1e3-f91b-4e12-a9d7-94bdc4375a60.png)
+
+
+### 📊 Prometheus Metrics  
+![Prometheus](screenshots/prometheus.png)
+
+### 📈 Grafana Dashboard  
+![Grafana](screenshots/grafana.png)
+
+### 🔐 Vault Secret Injection  
+![Vault](screenshots/vault.png)
+
+### 🌍 Live Web App  
+![Web App](screenshots/webapp.png)
+
+
+
+
 
 
