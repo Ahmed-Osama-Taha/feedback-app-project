@@ -64,25 +64,25 @@ A fully automated, production-grade, 3-tier application showcasing end-to-end De
 
 ## 📸 Screenshots
 
-### 🔍 SonarCloud Analysis  
-![SonarCloud](https://user-images.githubusercontent.com/126457491/287470148-6e045979-91c4-4090-8618-17e0a6c7ab34.png)
+### ✅ SonarCloud Code Analysis (Quality Gate Passed) 
+![SonarCloud]![alt text](image-1.png)
 
 
 ### 🚀 ArgoCD Deployment  
-![ArgoCD](https://user-images.githubusercontent.com/126457491/287472209-6a5de1e3-f91b-4e12-a9d7-94bdc4375a60.png)
+![ArgoCD]![alt text](image.png)
 
 
 ### 📊 Prometheus Metrics  
-![Prometheus](screenshots/prometheus.png)
+![Prometheus](![alt text](image-2.png))
 
 ### 📈 Grafana Dashboard  
-![Grafana](screenshots/grafana.png)
+![Grafana]![alt text](image-3.png)
 
 ### 🔐 Vault Secret Injection  
-![Vault](screenshots/vault.png)
+![Vault]![alt text](image-4.png)
 
-### 🌍 Live Web App  
-![Web App](screenshots/webapp.png)
+### 🌍 Live Feedback App  
+![FeedbackApp]![alt text](image-5.png)
 
 
 
