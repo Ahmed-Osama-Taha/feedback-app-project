@@ -1,4 +1,4 @@
-# 🚀 Full CI/CD Pipeline for 3-Tier Feedback App on AWS EKS
+# 🚀 Ahmed Ultimate CI/CD – 3-Tier Feedback App on AWS EKS
 
 This project demonstrates a **production-grade, GitOps-enabled DevOps pipeline** that deploys a 3-tier application (React, Flask, PostgreSQL) to **Amazon EKS**, with automation through **Azure DevOps**, infrastructure-as-code via **Terraform**, secure secrets management with **Vault**, and full observability using **Prometheus & Grafana**.
 
@@ -37,8 +37,10 @@ This project demonstrates a **production-grade, GitOps-enabled DevOps pipeline**
 - `pytest` with `coverage.xml` for SonarCloud
 
 ### 🧪 Static Analysis
-- SonarCloud quality gate → ✅ Passed  
-![alt text](image.png)
+- SonarCloud quality gate → ✅ Passed 
+
+![alt text](image-1.png)
+
 
 ### 🐳 Image Build & Scan
 - Docker task (backend & frontend)
@@ -54,7 +56,8 @@ This project demonstrates a **production-grade, GitOps-enabled DevOps pipeline**
 | `staging`   | Helm chart push (JFrog) → `helm upgrade`     | Parameterized via Azure  |
 | `prod`      | GitOps via Argo CD synced with `prod` branch | Automatic                |
 
-![alt text](image-1.png)
+
+![alt text](image.png)
 
 ---
 
@@ -64,7 +67,9 @@ This project demonstrates a **production-grade, GitOps-enabled DevOps pipeline**
 - Flask backend exposes `/metrics` via `prometheus_flask_exporter`
 - Exposed as NodePort: `localhost:30081/metrics`
 
-![alt text](image-4.png)
+
+![alt text](image-2.png)
+
 
 ```python
 from prometheus_flask_exporter import PrometheusMetrics
@@ -74,7 +79,8 @@ metrics = PrometheusMetrics(app)
 
 ### 📊 Grafana Dashboards
 - Dashboards created using PromQL  
-![alt text](image-2.png)
+
+![alt text](image-3.png)
 
 ---
 
@@ -103,7 +109,8 @@ vault.hashicorp.com/agent-inject-template-config.txt: |
   {{- end }}
 ```
 
-![alt text](image-3.png)
+![alt text](image-4.png)
+
 
 ---
 
