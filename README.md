@@ -18,7 +18,7 @@ A fully automated, production-grade, 3-tier application showcasing end-to-end De
 
 ## 📦 Key DevOps Features
 
-- **Custom Terraform modules** for EKS & VPC [[GitHub Modules](https://github.com/Ahmed-Osama-Taha/EKS-VPC-Terraform-Modules.git)]
+- **Custom Terraform modules** for EKS & VPC [[Terraform Modules](https://github.com/Ahmed-Osama-Taha/EKS-VPC-Terraform-Modules.git)]
 - **S3 remote backend with locking** for safe Terraform state management
 - **Ansible pipeline** to bootstrap and configure EC2 Azure DevOps agents
 - **CI pipeline** with:
@@ -28,7 +28,7 @@ A fully automated, production-grade, 3-tier application showcasing end-to-end De
   - Trivy image scanning
 - **CD pipeline** (parameterized by environment):
   - `dev`: `kubectl apply`
-  - `staging`: Helm chart deploy (via JFrog repo)
+  - `staging`: Helm chart deploy (via JFrog repo) [[Helm Repo](https://trial5x3qdq.jfrog.io/ui/native/ahmed-helm-repo-helm-local/)]
   - `prod`: Argo CD auto-sync from prod branch
 - **Monitoring**:
   - Prometheus + Flask metrics exporter
@@ -50,39 +50,34 @@ A fully automated, production-grade, 3-tier application showcasing end-to-end De
 
 ---
 
+## 📸 Screenshots
+
+### 📈 Grafana Dashboard  
+![alt text](image-3.png)
+
+### 📊 Prometheus Metrics  
+![alt text](image-2.png)
+
+### ✅ SonarCloud Code Analysis (Quality Gate Passed) 
+![alt text](image-1.png)
+
+### 🚀 ArgoCD Deployment  
+![alt text](image.png)
+
+### 🔐 Vault Secret Injection  
+![alt text](image-4.png)
+
+### 🌍 Live Feedback App  
+![alt text](image-5.png)
+
+---
+
 ## 🤝 Connect With Me
 
 - 📧 ahmed.osama.taha2@gmail.com
 - 💼 [LinkedIn](https://www.linkedin.com/in/ahmedosamataha)
-- 📂 [Helm Repo](https://trial5x3qdq.jfrog.io/ui/native/ahmed-helm-repo-helm-local/)
-- 🌐 [Terraform Modules](https://github.com/Ahmed-Osama-Taha/EKS-VPC-Terraform-Modules.git)
 
 
-
----
-
-
-## 📸 Screenshots
-
-### ✅ SonarCloud Code Analysis (Quality Gate Passed) 
-![SonarCloud]![alt text](image-1.png)
-
-
-### 🚀 ArgoCD Deployment  
-![ArgoCD]![alt text](image.png)
-
-
-### 📊 Prometheus Metrics  
-![Prometheus](![alt text](image-2.png))
-
-### 📈 Grafana Dashboard  
-![Grafana]![alt text](image-3.png)
-
-### 🔐 Vault Secret Injection  
-![Vault]![alt text](image-4.png)
-
-### 🌍 Live Feedback App  
-![FeedbackApp]![alt text](image-5.png)
 
 
 
