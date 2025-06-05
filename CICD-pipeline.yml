@@ -62,14 +62,13 @@ stages:
 
             displayName: Run unit tests with coverage 
             workingDirectory: 
+
           - task: PublishCodeCoverageResults@2
             inputs:
               summaryFileLocation: '$(Build.SourcesDirectory)/cobertura.xml'
             displayName: publish CodeCoverage to Azure UI  
               
               
-
-         
 
       - job: SonarQube            
         dependsOn: Test
@@ -125,11 +124,12 @@ stages:
           - script: |
               trivy image  --severity HIGH,CRITICAL ahmedosamataha/feedback_backend:$(Build.BuildId)
               trivy image --format json --output trivy-backend-report.json ahmedosamataha/feedback_backend:$(Build.BuildId)   # Generate Trivy JSON Report
-            displayName: 'Scan Docker image with Trivy'
+            displayName: 'Scan Backend image with Trivy'
             
           - task: PublishBuildArtifacts@1
+            displayName: publish trivy backend report to Az UI
             inputs:
-              PathtoPublish: 'trivy-backend-report.json'
+              PathtoPublish: '$(Build.SourcesDirectory)/trivy-backend-report.json'
               ArtifactName: 'TrivyBackendReport'
 
           - task: Docker@2
@@ -143,14 +143,36 @@ stages:
               buildContext: $(Build.SourcesDirectory)/src/feedback_backend
 
           - task: Docker@2
-            displayName: Build and Push frontend Image
+            displayName: Build frontend Image
             inputs:
               containerRegistry: 'Docker Registry'
               repository: 'ahmedosamataha/feedback_frontend'
-              command: 'buildAndPush'
+              command: 'build'
               Dockerfile: 'src/feedback_frontend/src/Dockerfile'
               tags: $(Build.BuildId)
               buildContext: '$(Build.SourcesDirectory)'
+
+          - script: |
+              trivy image  --severity HIGH,CRITICAL ahmedosamataha/feedback_frontend:$(Build.BuildId)
+              trivy image --format json --output trivy-frontend-report.json ahmedosamataha/feedback_frontend:$(Build.BuildId)   # Generate Trivy JSON Report
+            displayName: 'Scan frontend image with Trivy'
+
+          - task: PublishBuildArtifacts@1
+            displayName: publish trivy frontend report to Az UI
+            inputs:
+              PathtoPublish: '$(Build.SourcesDirectory)/trivy-frontend-report.json'
+              ArtifactName: 'TrivyFrontendReport'
+
+          - task: Docker@2
+            displayName: push frontend Image
+            inputs:
+              containerRegistry: 'Docker Registry'
+              repository: 'ahmedosamataha/feedback_frontend'
+              command: 'push'
+              Dockerfile: 'src/feedback_frontend/src/Dockerfile'
+              tags: $(Build.BuildId)
+              buildContext: '$(Build.SourcesDirectory)'
+
 
   - stage: CD
     dependsOn: CI
