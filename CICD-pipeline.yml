@@ -164,11 +164,11 @@ stages:
                 yq -i ".appVersion = \"$(Build.BuildId)\"" ahmed-FeedbackApp-HelmChart/Chart.yaml    # inject the new image tag in the helm chart 
                 yq -i ".version = \"0.$(Build.BuildId).0\"" ahmed-FeedbackApp-HelmChart/Chart.yaml     # update the chart version
 
-<<<<<<< HEAD
+
                 helm package ahmed-FeedbackApp-HelmChart                                    # package the updated helm chart
-=======
+
                 helm package ahmed-FeedbackApp-HelmChart                                           # package the updated helm chart
->>>>>>> fb8b0da43707ab55c9ca7c624014727620a57aa0
+
 
                 jf rt u "ahmed-FeedbackApp-HelmChart-0.$(Build.BuildId).0.tgz" "ahmed-helm-repo-helm/"  # uploading the updated chart to jfrog artifactory using jfrog cli
                 
