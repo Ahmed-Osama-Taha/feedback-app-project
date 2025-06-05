@@ -111,6 +111,19 @@ stages:
         displayName: Build and Push Docker Images
         steps:
           - checkout: self
+
+          - task: Docker@2
+            displayName: Build Backend Image
+            inputs:
+             containerRegistry: 'Docker Registry'
+             repository: 'ahmedosamataha/feedback_backend'
+             command: 'build'
+             Dockerfile: 'src/feedback_backend/Dockerfile'
+             tags: $(Build.BuildId)
+             buildContext: $(Build.SourcesDirectory)/src/feedback_backend
+          
+          - task: Tr
+              
           - task: Docker@2
             displayName: Build and Push Backend Image
             inputs:
