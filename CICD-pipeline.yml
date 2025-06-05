@@ -122,14 +122,22 @@ stages:
              tags: $(Build.BuildId)
              buildContext: $(Build.SourcesDirectory)/src/feedback_backend
           
-          - task: Tr
-              
+          - script: |
+              trivy image  --severity HIGH,CRITICAL ahmedosamataha/feedback_backend:$(Build.BuildId)
+              trivy image --format json --output trivy-backend-report.json ahmedosamataha/feedback_backend:$(Build.BuildId)   # Generate Trivy JSON Report
+            displayName: 'Scan Docker image with Trivy'
+            
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: 'trivy-backend-report.json'
+              ArtifactName: 'TrivyBackendReport'
+
           - task: Docker@2
-            displayName: Build and Push Backend Image
+            displayName: Push Backend Image
             inputs:
               containerRegistry: 'Docker Registry'
               repository: 'ahmedosamataha/feedback_backend'
-              command: 'buildAndPush'
+              command: 'Push'
               Dockerfile: 'src/feedback_backend/Dockerfile'
               tags: $(Build.BuildId)
               buildContext: $(Build.SourcesDirectory)/src/feedback_backend
