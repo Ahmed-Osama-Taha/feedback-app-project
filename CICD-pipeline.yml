@@ -121,16 +121,20 @@ stages:
              tags: $(Build.BuildId)
              buildContext: $(Build.SourcesDirectory)/src/feedback_backend
           
-          - script: |
-              trivy image  --severity HIGH,CRITICAL ahmedosamataha/feedback_backend:$(Build.BuildId)
-              trivy image --format json --output trivy-backend-report.json ahmedosamataha/feedback_backend:$(Build.BuildId)   # Generate Trivy JSON Report
-            displayName: 'Scan Backend image with Trivy'
-            
-          - task: PublishBuildArtifacts@1
-            displayName: publish trivy backend report to Az UI
+          - task: trivy@2
+            displayName: scan backend image with trivy
             inputs:
-              PathtoPublish: '$(Build.SourcesDirectory)/trivy-backend-report.json'
-              ArtifactName: 'TrivyBackendReport'
+              method: 'system'
+              type: 'image'
+              target: 'ahmedosamataha/feedback_backend:$(Build.BuildId)'
+              scanners: 'license, misconfig, secret, vuln'
+              severities: 'HIGH, CRITICAL'
+              ignoreUnfixed: true
+              ignoreScanErrors: true
+              reports: 'table'
+              publish: true
+              templates: '$(Build.SourcesDirectory)'
+
 
           - task: Docker@2
             displayName: Push Backend Image
@@ -151,18 +155,23 @@ stages:
               Dockerfile: 'src/feedback_frontend/src/Dockerfile'
               tags: $(Build.BuildId)
               buildContext: '$(Build.SourcesDirectory)'
+          
 
-          - script: |
-              trivy image  --severity HIGH,CRITICAL ahmedosamataha/feedback_frontend:$(Build.BuildId)
-              trivy image --format json --output trivy-frontend-report.json ahmedosamataha/feedback_frontend:$(Build.BuildId)   # Generate Trivy JSON Report
-            displayName: 'Scan frontend image with Trivy'
-
-          - task: PublishBuildArtifacts@1
-            displayName: publish trivy frontend report to Az UI
+          - task: trivy@2
+            displayName: scan frontend image with trivy
             inputs:
-              PathtoPublish: '$(Build.SourcesDirectory)/trivy-frontend-report.json'
-              ArtifactName: 'TrivyFrontendReport'
+              method: 'system'
+              type: 'image'
+              target: 'ahmedosamataha/feedback_frontend:$(Build.BuildId)'
+              scanners: 'license, misconfig, secret, vuln'
+              severities: 'HIGH, CRITICAL'
+              ignoreUnfixed: true
+              ignoreScanErrors: true
+              reports: 'table'
+              publish: true
+              templates: '$(Build.SourcesDirectory)'
 
+          
           - task: Docker@2
             displayName: push frontend Image
             inputs:
