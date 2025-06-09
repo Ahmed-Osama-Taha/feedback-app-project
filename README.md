@@ -46,6 +46,14 @@ This project demonstrates a **production-grade, GitOps-enabled DevOps pipeline**
 - Docker task (backend & frontend)
 - Trivy vulnerability scan
 
+  Backend Scaning:
+
+  ![alt text](image-6.png)
+
+  Frontend Scaning:
+
+  ![alt text](image-7.png)
+
 ---
 
 ## 🌍 Environment-Specific CD Strategy
