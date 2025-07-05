@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  
+  frontend:
+    image: ahmedosamataha/feedback_frontend:199
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend-service
+    networks:
+      - frontend    
+      
+  backend-service:
+    image: ahmedosamataha/feedback_backend:199
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_PASSWORD=${POSTGRES_PASSWORD}    
+    depends_on:
+      - db    
+    networks:
+      - frontend
+      - backend    
+
+  db:
+    image: postgres:13
+    restart: always
+    environment: 
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD} 
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d    
+    networks: 
+      - backend   
+
+
+          
+ 
+volumes:     
+  pgdata:
+  
+networks:
+  frontend:
+  backend:  
